@@ -96,6 +96,9 @@ function AddToCart() {
       setCounter(0);
       return;
     }
+    if(cartItem.length ===0){
+      navigate('/emptycart')
+    }
 
     const q = query(collection(db, "cart"), where("userId", "==", currentUser));
 
@@ -116,7 +119,7 @@ function AddToCart() {
     );
 
     return () => unsubscribe();
-  }, [currentUser, setCounter]);
+  }, [currentUser, setCounter,cartItem,navigate]);
 
   const filterItem = cartItem
     .map((cart) => {
@@ -148,6 +151,8 @@ function AddToCart() {
       console.log(error);
     }
   };
+
+  
 
   return (
     <Box sx={{ width: "100%", maxWidth: "1400px", mx: "auto",  }}>

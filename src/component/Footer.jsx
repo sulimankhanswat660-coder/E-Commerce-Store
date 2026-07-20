@@ -64,21 +64,21 @@ function Footer() {
             <Box
               sx={{
                 display: {
-                  xs: "none",
-                  md: "flex",
+                  // xs: "none",
+                  xs: "flex",
                 },
                 alignItems: "center",
                 border: "1px solid #ddd",
                 borderRadius: "40px",
                 px: 2,
-                width: "30%",
+                width: {xs:'60%',md:"30%"},
               }}
             >
               <InputBase
                 placeholder="Enter your email"
                 sx={{
                   ml: 1,
-                  width: "50%",
+                  width: "80%",
                 }}
               />
             </Box>

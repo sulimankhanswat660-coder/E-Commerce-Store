@@ -9,6 +9,7 @@ import Signin from "./Pages/Sign Up/Singin";
 import About from "./Pages/About";
 import UserContext from "./context/UserContext";
 import AddToCart from "./Pages/add to Cart/AddToCart";
+import EmptyCart from "./Pages/add to Cart/EmptyCart";
 
 function App() {
   const usercontext = useContext(UserContext);
@@ -56,7 +57,12 @@ function App() {
           element={!user ? <Signin /> : <Navigate to="/" replace />}
         />
         <Route path="/about" element={<About />} />
+
+        {/* AddToCart */}
         <Route path = "/addtocart" element={<AddToCart/>}/>
+
+        {/* EmptyCart */}
+        <Route path="/emptycart" element={<EmptyCart/>}/>
 
         {/* Any other route */}
         <Route
