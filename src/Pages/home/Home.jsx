@@ -13,6 +13,7 @@ import core from "../../../public/Core.avif";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../lib/Firebase";
+import Footer from "../../component/Footer";
 
 function Home() {
   return (
@@ -22,8 +23,7 @@ function Home() {
           width: "100%",
           maxWidth: "1400px",
           mx: "auto",
-          my:15
-          // px: 2,
+          mt:15
         }}
       >
         <Stack sx={{ my: 10, mt: 0 }}>
@@ -70,6 +70,7 @@ function Home() {
             />
           ))}
         </Box>
+        <Footer/>
       </Box>
       {/* </Container> */}
     </>

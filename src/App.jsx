@@ -35,7 +35,7 @@ function App() {
   
      <BrowserRouter>
       {/* Navbar only for authenticated users */}
-      {user && <Navbar />}
+      {user && <Navbar /> }
 
       <Routes>
         {/* Home */}
