@@ -157,6 +157,7 @@ function AddToCart() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          mt:15
         }}
       >
         <Stack>
