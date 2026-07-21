@@ -1,37 +1,3 @@
-// import { Box, Button, Typography } from "@mui/material";
-// import { useNavigate } from "react-router-dom";
-
-// function EmptyCart() {
-//   const navigate = useNavigate();
-
-//   return (
-//     <>
-//       <Box
-//
-//       >
-//         <Box
-//           sx={{
-//             // height: "80vh",
-//             display: "flex",
-//             flexDirection: "column",
-//             justifyContent: "center",
-//             alignItems: "center",
-//             gap: 2,
-//           }}
-//         >
-//           <Typography variant="h4">Your Cart is Empty</Typography>
-
-//           <Button variant="contained" onClick={() => navigate("/")}>
-//             Continue Shopping
-//           </Button>
-//         </Box>
-//       </Box>
-//     </>
-//   );
-// }
-
-// export default EmptyCart;
-
 import React from "react";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";

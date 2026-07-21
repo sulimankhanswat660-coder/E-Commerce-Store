@@ -484,7 +484,7 @@ const Navbar = () => {
         <Box sx={{ width: 260 }}>
           <List>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={()=>navigate("/contactus")}>
                 <ListItemText primary="Contact" />
               </ListItemButton>
             </ListItem>

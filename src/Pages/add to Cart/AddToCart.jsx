@@ -262,7 +262,7 @@ function AddToCart() {
       <Paper
         elevation={3}
         sx={{
-          width: "90%",
+          width: {xs:'70%',sm:"90%"},
           mx: "auto",
           mt: 6,
           mb: 6,
