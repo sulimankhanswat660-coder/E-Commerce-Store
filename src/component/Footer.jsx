@@ -133,7 +133,10 @@ function Footer() {
               component="span"
               sx={{
                 color: "#2F3B52",
-                fontSize: "2rem",
+                 fontSize: {
+                  xs: "1.5rem",
+                  sm: "2rem",
+                },
                 fontWeight: 500,
               }}
             >
