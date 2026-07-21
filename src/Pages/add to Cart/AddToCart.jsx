@@ -151,22 +151,23 @@ function AddToCart() {
       console.log(error);
     }
   };
-
+ 
   
 
   return (
     <Box sx={{ width: "100%", maxWidth: "1400px", mx: "auto",  }}>
       <Box
         sx={{
-          p: "34px",
+          px: {xs:'10px',md:"30px"},
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mt:15
+          mt:{xs:12,md:15},
+          mb:4
         }}
       >
         <Stack>
-          <Typography variant="h4" fontWeight={600}>
+          <Typography sx={{fontSize:{xs:'22px',sm:'32px'},fontWeight:600}}>
             Shopping Cart
           </Typography>
 
@@ -190,37 +191,24 @@ function AddToCart() {
             },
           }}
         >
-          <ArrowBackIcon />
-          <Typography fontSize={15}>Continue Shopping</Typography>
+          <ArrowBackIcon sx={{fontSize:{xs:'13px',sm:'16px'}}} />
+          <Typography sx={{fontSize:{xs:'12px',sm:'16px'}}}>Continue Shopping</Typography>
         </Box>
       </Box>
       <Box
-        sx={{
+      
+         sx={{
           display: "flex",
-          flexWrap: "wrap",
-          gap: 4,
-
-          justifyContent: {
-            xs: "center",
-            sm: "center",
-          },
-
-          alignItems: {
-            xs: "center",
-            md: "flex-start",
-          },
-
-          mx: "30px",
+          mx:'auto',
+          flexDirection: { xs: "column", md: "row" },
+          width: "95%",
+          gap: 5,
         }}
       >
         <Paper
           elevation={2}
           sx={{
-            width: {
-              xs: "100%",
-              sm: "80%",
-              md: "59%",
-            },
+            flex:2,
             borderRadius: 5,
             p: 2,
           }}
@@ -231,6 +219,7 @@ function AddToCart() {
         </Typography>
         <Box
           // onClick={() => deleteItem(item.cartId)}
+        
           sx={{
             display: "flex",
             alignItems: "center",
@@ -246,7 +235,7 @@ function AddToCart() {
             },
           }}
         >
-          <DeleteOutlineOutlinedIcon />
+          <DeleteOutlineOutlinedIcon  sx={{ fontSize: "15px" }} />
 
           <Typography sx={{ fontSize: "15px" }}>Clear All</Typography>
           </Box>
@@ -257,11 +246,8 @@ function AddToCart() {
         </Paper>
         <Box
           sx={{
-            width: {
-              xs: "100%",
-              sm: "80%",
-              md: "35%",
-            },
+           
+            flex:1,
           }}
         >
           <OrderSummary

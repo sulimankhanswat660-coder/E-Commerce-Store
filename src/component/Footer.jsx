@@ -372,13 +372,14 @@ function Footer() {
       </Container>
       <Box
         sx={{
-          height: "100px",
+          height: "80px",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+        
         }}
       >
-        <Typography>Centered Content</Typography>
+        <Typography   sx={{fontWeight:600}}>Centered by MS Khan</Typography>
       </Box>
     </Box>
   );

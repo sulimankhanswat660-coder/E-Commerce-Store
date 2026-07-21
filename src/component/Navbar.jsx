@@ -273,7 +273,6 @@
 
 // export default Navbar;
 
-
 import {
   AppBar,
   Avatar,
@@ -296,11 +295,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import {
-  Menu,
-  Search,
-  ShoppingCartOutlined,
-} from "@mui/icons-material";
+import { Menu, Search, ShoppingCartOutlined } from "@mui/icons-material";
 
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -317,10 +312,7 @@ const Navbar = () => {
 
   const { cartItem } = useContext(cartContext);
 
-  const totalItem = cartItem.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
+  const totalItem = cartItem.reduce((total, item) => total + item.quantity, 0);
 
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -352,7 +344,7 @@ const Navbar = () => {
             <Link to="/" style={{ textDecoration: "none" }}>
               <Box display="flex">
                 <Typography
-                component='span'
+                  component="span"
                   sx={{
                     color: "#2F3B52",
                     fontWeight: 500,
@@ -366,7 +358,7 @@ const Navbar = () => {
                 </Typography>
 
                 <Typography
-                component='span'
+                  component="span"
                   sx={{
                     color: "#F59E0B",
                     fontWeight: 500,
@@ -391,7 +383,23 @@ const Navbar = () => {
                 // gap: 2,
               }}
             >
-              <Typography sx={{ cursor: "pointer", fontSize:'1rem',fontWeight:'500'}}>
+              <Typography
+                onClick={() => navigate("/contactus")}
+                sx={{
+                  cursor: "pointer",
+                  fontSize: "1rem",
+                  width: "fit-content",
+                  py:1,
+                  px:2,
+
+                  fontWeight: "500",
+                  "&:hover": {
+                    bgcolor: "#e9e9e9",
+                    borderRadius: "30px",
+                    color: "#000",
+                  },
+                }}
+              >
                 Contact
               </Typography>
             </Box>
@@ -432,13 +440,8 @@ const Navbar = () => {
                 gap: 2,
               }}
             >
-              <IconButton
-                onClick={() => navigate("/addtocart")}
-              >
-                <Badge
-                  badgeContent={totalItem}
-                  color="warning"
-                >
+              <IconButton onClick={() => navigate("/addtocart")}>
+                <Badge badgeContent={totalItem} color="warning">
                   <ShoppingCartOutlined />
                 </Badge>
               </IconButton>
@@ -461,21 +464,14 @@ const Navbar = () => {
               }}
             >
               {/* Cart */}
-              <IconButton
-                onClick={() => navigate("/addtocart")}
-              >
-                <Badge
-                  badgeContent={totalItem}
-                  color="warning"
-                >
+              <IconButton onClick={() => navigate("/addtocart")}>
+                <Badge badgeContent={totalItem} color="warning">
                   <ShoppingCartOutlined />
                 </Badge>
               </IconButton>
 
               {/* Menu */}
-              <IconButton
-                onClick={() => setOpen(true)}
-              >
+              <IconButton onClick={() => setOpen(true)}>
                 <Menu />
               </IconButton>
             </Box>
@@ -484,14 +480,9 @@ const Navbar = () => {
       </AppBar>
 
       {/* Drawer */}
-      <Drawer
-        anchor="right"
-        open={open}
-        onClose={() => setOpen(false)}
-      >
+      <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
         <Box sx={{ width: 260 }}>
           <List>
-
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemText primary="Contact" />
@@ -510,26 +501,18 @@ const Navbar = () => {
                 <ListItemText primary="Logout" />
               </ListItemButton>
             </ListItem>
-
           </List>
         </Box>
       </Drawer>
 
       {/* Logout Dialog */}
-      <Dialog
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-      >
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Sign Out</DialogTitle>
 
-        <DialogContent>
-          Are you sure you want to sign out?
-        </DialogContent>
+        <DialogContent>Are you sure you want to sign out?</DialogContent>
 
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>
-            Cancel
-          </Button>
+          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
 
           <Button
             variant="contained"

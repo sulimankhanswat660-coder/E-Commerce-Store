@@ -44,20 +44,19 @@ function Rough({ item, deleteItem }) {
       <Box
         sx={{
           display: "flex",
-          gap: 3,
           alignItems: "center",
           justifyContent: "space-between",
           py: 3,
           flexWrap: "wrap",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: "25px" }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: {xs:'18px',sm:"25px"} }}>
           <Box
             component="img"
             src={item.image}
             sx={{
-              width: 90,
-              height: 90,
+              width: {xs:80,sm:90},
+              height:{xs:80,sm:90},
               objectFit: "cover",
               borderRadius: 3,
             }}
@@ -74,10 +73,9 @@ function Rough({ item, deleteItem }) {
                 alignItems: "center",
                 border: "1px solid #ddd",
                 borderRadius: 10,
-                width: 130,
+                width: {xs:100,sm:130},
                 justifyContent: "space-between",
                 mt: 2,
-                // px: 1,
               }}
             >
               <IconButton onClick={() => decrease(item.id)}>

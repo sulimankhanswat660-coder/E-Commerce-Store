@@ -6,10 +6,10 @@ import Navbar from "./component/Navbar";
 import Home from "./Pages/home/Home";
 import SignUp from "./Pages/Sign Up/SingUp";
 import Signin from "./Pages/Sign Up/Singin";
-import About from "./Pages/About";
 import UserContext from "./context/UserContext";
 import AddToCart from "./Pages/add to Cart/AddToCart";
 import EmptyCart from "./Pages/add to Cart/EmptyCart";
+import Contact from "./Pages/contact/Contact";
 
 function App() {
   const usercontext = useContext(UserContext);
@@ -56,7 +56,8 @@ function App() {
           path="/signin"
           element={!user ? <Signin /> : <Navigate to="/" replace />}
         />
-        <Route path="/about" element={<About />} />
+        {/* Contact Us */}
+        <Route path="/contactus" element={<Contact/>}/> 
 
         {/* AddToCart */}
         <Route path = "/addtocart" element={<AddToCart/>}/>
