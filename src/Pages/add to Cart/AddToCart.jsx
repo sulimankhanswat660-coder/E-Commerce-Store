@@ -191,8 +191,8 @@ function AddToCart() {
             },
           }}
         >
-          <ArrowBackIcon sx={{fontSize:{xs:'13px',sm:'16px'}}} />
-          <Typography sx={{fontSize:{xs:'12px',sm:'16px'}}}>Continue Shopping</Typography>
+          <ArrowBackIcon sx={{fontSize:{xs:'14px',sm:'16px'}}} />
+          <Typography sx={{fontSize:{xs:'14px',sm:'16px'}}}>Continue Shopping</Typography>
         </Box>
       </Box>
       <Box
