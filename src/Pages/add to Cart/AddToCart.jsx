@@ -23,10 +23,10 @@ import street from "../../../public/Street.avif";
 import nova from "../../../public/Nova.avif";
 import pulse from "../../../public/Pulse.avif";
 import core from "../../../public/Core.avif";
-import Rough from "./ProductShow";
 import { cartContext } from "../../context/CartContext";
 import OrderSummary from "./OrderSummary";
 import Footer from "../../component/Footer";
+import ProductList from "./ProductList";
 
 const products = [
   {
@@ -211,6 +211,7 @@ function AddToCart() {
             flex:2,
             borderRadius: 5,
             p: 2,
+            height:'max-content'
           }}
         >
           <Box sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
@@ -241,7 +242,7 @@ function AddToCart() {
           </Box>
         </Box>
           {filterItem.map((item) => (
-            <Rough key={item.id} item={item} deleteItem={deleteItem} />
+            <ProductList key={item.id} item={item} deleteItem={deleteItem} />
           ))}
         </Paper>
         <Box

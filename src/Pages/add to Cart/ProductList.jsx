@@ -14,7 +14,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../../lib/Firebase";
 
-function Rough({ item, deleteItem }) {
+function  ProductList({ item, deleteItem }) {
   const increase = async () => {
     try {
       await updateDoc(doc(db, "cart", item.cartId), {
@@ -130,4 +130,4 @@ function Rough({ item, deleteItem }) {
   );
 }
 
-export default Rough;
+export default ProductList;

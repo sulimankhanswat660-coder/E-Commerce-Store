@@ -63,7 +63,7 @@ export default function ProductCard({ name, price, image, id }) {
 
       setTimeout(() => {
         setIsClicked(false);
-      }, 1000);
+      }, 500);
     } catch (error) {
       console.log(error);
     }
@@ -178,7 +178,7 @@ export default function ProductCard({ name, price, image, id }) {
           }}
           mt={1}
         >
-          {price}.00
+          {price}
         </Typography>
         <Button
           fullWidth
