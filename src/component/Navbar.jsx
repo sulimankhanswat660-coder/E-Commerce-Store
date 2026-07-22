@@ -390,6 +390,7 @@ const Navbar = () => {
                   fontSize: "1rem",
                   width: "fit-content",
                   py:1,
+                  mr:8,
                   px:2,
 
                   fontWeight: "500",
@@ -460,7 +461,7 @@ const Navbar = () => {
                   md: "none",
                 },
                 alignItems: "center",
-                gap: 1,
+                // gap: 1,
               }}
             >
               {/* Cart */}
@@ -481,7 +482,7 @@ const Navbar = () => {
 
       {/* Drawer */}
       <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
-        <Box sx={{ width: 260 }}>
+        <Box sx={{ width: 300 }}>
           <List>
             <ListItem disablePadding>
               <ListItemButton onClick={()=>navigate("/contactus")}>

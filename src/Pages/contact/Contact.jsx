@@ -2,8 +2,8 @@ import React from "react";
 import ContactHero from "./compnent/CantactHero";
 import { Box } from "@mui/material";
 import ContactForm from "./compnent/ContactForm";
-import CantactCall from "./compnent/CantactCall";
 import Footer from "../../component/Footer";
+import ContactCTA from "./compnent/CantactCTA";
 
 export default function Contact() {
   return (
@@ -18,7 +18,7 @@ export default function Contact() {
       >
         <ContactHero />
         <ContactForm/>
-        <CantactCall/>
+        <ContactCTA/>
         <Footer/>
       </Box>
     </>

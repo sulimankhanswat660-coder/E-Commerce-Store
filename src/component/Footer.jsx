@@ -295,6 +295,7 @@ function Footer() {
             ].map((item) => (
               <Typography
                 key={item}
+                   onClick={() => navigate("/contactus")}
                 sx={{
                   mb: 2,
                   fontSize: "14px",
@@ -382,7 +383,7 @@ function Footer() {
         
         }}
       >
-        <Typography   sx={{fontWeight:600}}>Centered by MS Khan</Typography>
+        <Typography   sx={{fontWeight:600}}>Made with MS Khan</Typography>
       </Box>
     </Box>
   );

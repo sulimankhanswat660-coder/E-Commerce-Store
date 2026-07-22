@@ -13,7 +13,7 @@ import WhyContact from "./WhyContact";
 
 function ContactForm() {
   return (
-    <Container maxWidth="xl" sx={{ py: 10 }}>
+    <Container maxWidth="xl" sx={{ py: {xs:5,md:10} }}>
       <Box
         sx={{
           display: "flex",
