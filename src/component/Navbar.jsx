@@ -473,7 +473,7 @@ const Navbar = () => {
 
               {/* Menu */}
               <IconButton onClick={() => setOpen(true)}>
-                <Menu fontSize="large" />
+                <Menu sx={{fontSize:'30px'}} />
               </IconButton>
             </Box>
           </Toolbar>
