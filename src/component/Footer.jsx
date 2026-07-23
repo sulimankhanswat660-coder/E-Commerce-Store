@@ -380,10 +380,11 @@ function Footer() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          bgcolor:'#000'
         
         }}
       >
-        <Typography   sx={{fontWeight:600}}>Made with MS Khan</Typography>
+        <Typography   sx={{fontWeight:600,color:'#fff'}}>Made by MS Khan</Typography>
       </Box>
     </Box>
   );
