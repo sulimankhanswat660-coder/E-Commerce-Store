@@ -3,21 +3,22 @@ import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
+import { useNavigate } from "react-router-dom";
 
 export default function OrderSummary({ subtotal, totalItems, tax, total }) {
+  const navigate = useNavigate();
   return (
     <Paper
       elevation={2}
       sx={{
-       
         p: 3,
         borderRadius: 6,
       }}
     >
       <Typography
         sx={{
-          fontSize: { xs: "18px", md: "20px", },
-           fontWeight: 600,
+          fontSize: { xs: "18px", md: "20px" },
+          fontWeight: 600,
           mb: 3,
         }}
       >
@@ -32,11 +33,11 @@ export default function OrderSummary({ subtotal, totalItems, tax, total }) {
           mb: 1,
         }}
       >
-        <Typography sx={{ color: "#6b7280" ,fontSize:14}} >
+        <Typography sx={{ color: "#6b7280", fontSize: 14 }}>
           Subtotal ({totalItems} items)
         </Typography>
 
-        <Typography sx={{fontWeight:550}} fontSize={12}>
+        <Typography sx={{ fontWeight: 550 }} fontSize={12}>
           ${subtotal.toFixed(2)}
         </Typography>
       </Box>
@@ -49,7 +50,7 @@ export default function OrderSummary({ subtotal, totalItems, tax, total }) {
           mb: 1,
         }}
       >
-        <Typography sx={{ color: "#6b7280",fontSize:14 }} >
+        <Typography sx={{ color: "#6b7280", fontSize: 14 }}>
           Shipping
         </Typography>
 
@@ -61,7 +62,7 @@ export default function OrderSummary({ subtotal, totalItems, tax, total }) {
             py: 0.5,
             borderRadius: 10,
             fontWeight: 600,
-            fontSize:12
+            fontSize: 12,
           }}
         >
           Free
@@ -76,11 +77,9 @@ export default function OrderSummary({ subtotal, totalItems, tax, total }) {
           mb: 1.5,
         }}
       >
-        <Typography sx={{ color: "#6b7280",fontSize:14 }}>
-          Tax
-        </Typography>
+        <Typography sx={{ color: "#6b7280", fontSize: 14 }}>Tax</Typography>
 
-        <Typography  sx={{fontWeight:550}} fontSize={12}>
+        <Typography sx={{ fontWeight: 550 }} fontSize={12}>
           ${tax.toFixed(2)}
         </Typography>
       </Box>
@@ -119,6 +118,7 @@ export default function OrderSummary({ subtotal, totalItems, tax, total }) {
       {/* Button */}
       <Button
         fullWidth
+        onClick={() => navigate("/checkout")}
         startIcon={<CreditCardOutlinedIcon />}
         variant="contained"
         sx={{
@@ -127,7 +127,7 @@ export default function OrderSummary({ subtotal, totalItems, tax, total }) {
           bgcolor: "#f59e0b",
           color: "#000",
           fontSize: 15,
-          fontWeight:600,
+          fontWeight: 600,
           textTransform: "none",
           boxShadow: 4,
 
@@ -139,7 +139,7 @@ export default function OrderSummary({ subtotal, totalItems, tax, total }) {
         Proceed to Checkout
       </Button>
 
-      <Divider sx={{ my: 2.5}} />
+      <Divider sx={{ my: 2.5 }} />
 
       {/* Features */}
       <Box
