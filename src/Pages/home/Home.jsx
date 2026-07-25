@@ -91,15 +91,14 @@
 // }
 
 // export default Home;
-import airflex from "../../../public/Airflex.avif";
-import urban from "../../../public/Urban.avif";
-import classic from "../../../public/Classic.avif";
-import volt from "../../../public/Volt.avif";
-import zenith from "../../../public/Zenith.avif";
-import street from "../../../public/Street.avif";
-import nova from "../../../public/Nova.avif";
-import pulse from "../../../public/Pulse.avif";
-import core from "../../../public/Core.avif";
+// import airflex from "../../../public/Airflex.avif";
+// import urban from "../../../public/Urban.avif";
+// import classic from "../../../public/Classic.avif";
+// import volt from "../../../public/Volt.avif";
+// import zenith from "../../../public/Zenith.avif";
+// import street from "../../../public/Street.avif";
+// import nova from "../../../public/Nova.avif";
+// import pulse from "../../../public/Pulse.avif";
 import { Box, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
@@ -118,6 +117,7 @@ function Home() {
       }));
 
       setProducts(data);
+    
     });
 
     return () => unsubscribe();
@@ -168,6 +168,8 @@ function Home() {
       >
         {products.map((product) => (
           <ProductCard
+     
+          
             key={product.id}
             id={product.id}
             name={product.name}
@@ -185,68 +187,68 @@ function Home() {
 
 export default Home;
 
-const products = [
-  {
-    id: 1,
-    name: "AirFlex Runner",
-    price: "$89.00",
-    image: airflex,
-    stock: 20,
-  },
-  {
-    id: 2,
-    name: "Urban Street Pro",
-    price: "$99.00",
-    image: urban,
-    stock: 20,
-  },
-  {
-    id: 3,
-    name: "Classic Court 90s",
-    price: "$79.00",
-    image: classic,
-    stock: 20,
-  },
-  {
-    id: 4,
-    name: "Volt Edge",
-    price: "$119.00",
-    image: volt,
-    stock: 20,
-  },
-  {
-    id: 5,
-    name: "Zenith Flow",
-    price: "$129.00",
-    image: zenith,
-    stock: 20,
-  },
-  {
-    id: 6,
-    name: "Street Vibe Low",
-    price: "$69.00",
-    image: street,
-    stock: 20,
-  },
-  {
-    id: 7,
-    name: "Nova Horizon",
-    price: "$109.00",
-    image: nova,
-    stock: 20,
-  },
-  {
-    id: 8,
-    name: "Pulse Runner",
-    price: "$109.00",
-    image: pulse,
-    stock: 20,
-  },
-  {
-    id: 9,
-    name: "Core Classic",
-    price: "$109.00",
-    image: core,
-    stock: 20,
-  },
-];
+// const products = [
+//   {
+//     id: 1,
+//     name: "AirFlex Runner",
+//     price: "$89.00",
+//     image: airflex,
+//     stock: 20,
+//   },
+//   {
+//     id: 2,
+//     name: "Urban Street Pro",
+//     price: "$99.00",
+//     image: urban,
+//     stock: 20,
+//   },
+//   {
+//     id: 3,
+//     name: "Classic Court 90s",
+//     price: "$79.00",
+//     image: classic,
+//     stock: 20,
+//   },
+//   {
+//     id: 4,
+//     name: "Volt Edge",
+//     price: "$119.00",
+//     image: volt,
+//     stock: 20,
+//   },
+//   {
+//     id: 5,
+//     name: "Zenith Flow",
+//     price: "$129.00",
+//     image: zenith,
+//     stock: 20,
+//   },
+//   {
+//     id: 6,
+//     name: "Street Vibe Low",
+//     price: "$69.00",
+//     image: street,
+//     stock: 20,
+//   },
+//   {
+//     id: 7,
+//     name: "Nova Horizon",
+//     price: "$109.00",
+//     image: nova,
+//     stock: 20,
+//   },
+//   {
+//     id: 8,
+//     name: "Pulse Runner",
+//     price: "$109.00",
+//     image: pulse,
+//     stock: 20,
+//   },
+//   {
+//     id: 9,
+//     name: "Core Classic",
+//     price: "$109.00",
+//     image: core,
+//     stock: 20,
+//   },
+// ];

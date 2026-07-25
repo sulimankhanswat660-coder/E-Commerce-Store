@@ -11,6 +11,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { useContext, useState } from "react";
 import UserContext from "../../context/UserContext";
 import { cartContext } from "../../context/CartContext";
+import core from "../../../public/Core.avif";
 import {
   doc,
   getDoc,
@@ -122,7 +123,7 @@ export default function ProductCard({ name, price, image, id, stock }) {
       >
         <CardMedia
           component="img"
-          image={image}
+          image={image || core}
           alt="shoes"
           sx={{
             height: 320,
