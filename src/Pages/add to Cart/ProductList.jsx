@@ -1,22 +1,29 @@
 import {
   Box,
-  Button,
   Divider,
   IconButton,
-  Paper,
   Typography,
 } from "@mui/material";
 import React from "react";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddIcon from "@mui/icons-material/Add";
-import nike from "../../../public/Airflex.avif";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../../lib/Firebase";
 
-function  ProductList({ item, deleteItem }) {
+function ProductList({ item, deleteItem }) {
   const increase = async () => {
     try {
+      if (item.stock <= 0) {
+        alert("This product is out of stock.");
+        return;
+      }
+
+      if (item.quantity >= item.stock) {
+        alert(`Only ${item.stock} item(s) available in stock.`);
+        return;
+      }
+
       await updateDoc(doc(db, "cart", item.cartId), {
         quantity: item.quantity + 1,
       });
@@ -24,6 +31,7 @@ function  ProductList({ item, deleteItem }) {
       console.log(error);
     }
   };
+
   const decrease = async () => {
     if (item.quantity === 1) return;
 
@@ -44,87 +52,128 @@ function  ProductList({ item, deleteItem }) {
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
           justifyContent: "space-between",
+          alignItems: "center",
           py: 3,
           flexWrap: "wrap",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: {xs:'18px',sm:"25px"} }}>
+        {/* Left Side */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: {xs:2,sm:3},
+            alignItems: "center",
+          }}
+        >
           <Box
             component="img"
             src={item.image}
             sx={{
-              width: {xs:80,sm:90},
-              height:{xs:80,sm:90},
-              objectFit: "cover",
+              width:{ xs:80,md:100},
+              height:{ xs:80,md:100},
               borderRadius: 3,
+              objectFit: "cover",
             }}
           />
 
-          <Box sx={{ alignSelf: "end" }}>
-            <Typography sx={{ fontSize: "16px", fontWeight: "600" }}>
+          <Box>
+            <Typography sx={{fontSize:{xs:'14px',sm:'16px'},fontWeight:600,mb:{xs:'0px',sm:'5px'}}}>
               {item.name}
             </Typography>
-            <Typography sx={{ color: "#6b7280" }}>{item.price} each</Typography>
+
+            <Typography sx={{fontSize:'13px', color: "#6b7280"}}>
+              {item.price} each
+            </Typography>
+
+            {/* Stock */}
+            {item.stock > 0 ? (
+              <Typography
+                sx={{
+                  color: "green",
+                  fontSize: 14,
+                }}
+              >
+                Stock: {item.stock}
+              </Typography>
+            ) : (
+              <Typography
+                sx={{
+                  color: "red",
+                  fontSize: 14,
+                  mt: 1,
+                  fontWeight: 600,
+                }}
+              >
+                Out of Stock
+              </Typography>
+            )}
+
+            {/* Quantity */}
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
                 border: "1px solid #ddd",
                 borderRadius: 10,
-                width: {xs:100,sm:130},
+                width:{ xs:100,sm:130},
+                height:30,
                 justifyContent: "space-between",
-                mt: 2,
+                mt: "10px",
               }}
             >
-              <IconButton onClick={() => decrease(item.id)}>
+              <IconButton onClick={decrease}>
                 <RemoveIcon fontSize="small" />
               </IconButton>
 
-              <Typography fontSize={22} fontWeight={600}>
+              <Typography fontWeight={600}>
                 {item.quantity}
               </Typography>
 
-              <IconButton onClick={increase}>
+              <IconButton
+                onClick={increase}
+                disabled={
+                  item.stock <= 0 ||
+                  item.quantity >= item.stock
+                }
+              >
                 <AddIcon fontSize="small" />
               </IconButton>
             </Box>
           </Box>
         </Box>
 
+        {/* Right Side */}
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "end",
-            gap: "20px",
+            alignItems: "flex-end",
+            gap: 2,
           }}
         >
-          <Box
+          <IconButton
             onClick={() => deleteItem(item.cartId)}
             sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              cursor: "pointer",
-              width: "fit-content",
-              p: 1,
-              color: "#6b7280",
               "&:hover": {
-                bgcolor: "#f9e7c8",
-                borderRadius: 30,
-                color: "#d65050",
+                color: "red",
               },
             }}
           >
             <DeleteOutlineOutlinedIcon />
-          </Box>
-          <Typography sx={{ fontSize: "18px", fontWeight: "700" }}>
+          </IconButton>
+
+          <Typography
+            sx={{
+              fontWeight: 700,
+              fontSize: 18,
+            }}
+          >
             ${totalPrice.toFixed(2)}
           </Typography>
         </Box>
       </Box>
+
       <Divider />
     </Box>
   );

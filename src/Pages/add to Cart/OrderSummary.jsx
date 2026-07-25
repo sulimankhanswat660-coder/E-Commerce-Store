@@ -5,7 +5,13 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
 import { useNavigate } from "react-router-dom";
 
-export default function OrderSummary({ subtotal, totalItems, tax, total }) {
+export default function OrderSummary({
+  subtotal,
+  totalItems,
+  tax,
+  total,
+  disableCheckout,
+}) {
   const navigate = useNavigate();
   return (
     <Paper
@@ -116,7 +122,7 @@ export default function OrderSummary({ subtotal, totalItems, tax, total }) {
       </Box>
 
       {/* Button */}
-      <Button
+      {/* <Button
         fullWidth
         onClick={() => navigate("/checkout")}
         startIcon={<CreditCardOutlinedIcon />}
@@ -137,6 +143,32 @@ export default function OrderSummary({ subtotal, totalItems, tax, total }) {
         }}
       >
         Proceed to Checkout
+      </Button> */}
+      <Button
+        fullWidth
+        variant="contained"
+        disabled={disableCheckout}
+        onClick={() => {
+          if (!disableCheckout) {
+            navigate("/checkout");
+          }
+        }}
+        startIcon={<CreditCardOutlinedIcon />}
+        sx={{
+          borderRadius: "18px",
+          bgcolor: disableCheckout ? "#bdbdbd" : "#f59e0b",
+          color: "#000",
+          fontSize: 15,
+          fontWeight: 600,
+          textTransform: "none",
+          boxShadow: 4,
+
+          "&:hover": {
+            bgcolor: disableCheckout ? "#bdbdbd" : "#E69500",
+          },
+        }}
+      >
+        {disableCheckout ? "Out of Stock" : "Proceed to Checkout"}
       </Button>
 
       <Divider sx={{ my: 2.5 }} />

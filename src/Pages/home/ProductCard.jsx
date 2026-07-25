@@ -12,25 +12,32 @@ import { useContext, useState } from "react";
 import UserContext from "../../context/UserContext";
 import { cartContext } from "../../context/CartContext";
 import {
+  doc,
+  getDoc,
+  updateDoc,
   addDoc,
   collection,
-  getDocs,
   query,
   where,
-  updateDoc,
-  doc,
+  getDocs,
+  increment,
 } from "firebase/firestore";
 import { db } from "../../lib/Firebase";
-export default function ProductCard({ name, price, image, id }) {
+export default function ProductCard({ name, price, image, id, stock }) {
   const context = useContext(UserContext);
   const { setId } = useContext(cartContext);
   const { currentUser, counter, setCounter } = context;
   const [isClicked, setIsClicked] = useState(false);
 
-
   const addToCart = async () => {
     if (!currentUser) {
       alert("Please login first");
+      return;
+    }
+
+    // Product is out of stock
+    if (stock <= 0) {
+      alert("This product is out of stock.");
       return;
     }
 
@@ -44,14 +51,19 @@ export default function ProductCard({ name, price, image, id }) {
       const snapshot = await getDocs(q);
 
       if (!snapshot.empty) {
-        // Product already exists
         const cartDoc = snapshot.docs[0];
+        const currentQuantity = cartDoc.data().quantity;
+
+        // Don't allow quantity greater than stock
+        if (currentQuantity >= stock) {
+          alert(`Only ${stock} item(s) available in stock.`);
+          return;
+        }
 
         await updateDoc(doc(db, "cart", cartDoc.id), {
-          quantity: cartDoc.data().quantity + 1,
+          quantity: increment(1),
         });
       } else {
-        // First time adding
         await addDoc(collection(db, "cart"), {
           userId: currentUser,
           productId: id,
@@ -69,7 +81,6 @@ export default function ProductCard({ name, price, image, id }) {
     }
   };
 
-  
   return (
     <Card
       sx={{
@@ -158,7 +169,6 @@ export default function ProductCard({ name, price, image, id }) {
       {/* Content */}
       <CardContent>
         <Typography
-          variant="h6"
           sx={{
             fontSize: "14px",
             fontWeight: "600",
@@ -185,20 +195,29 @@ export default function ProductCard({ name, price, image, id }) {
           startIcon={<ShoppingCartOutlinedIcon />}
           variant="contained"
           onClick={addToCart}
+          disabled={stock <= 0}
           sx={{
-            mt: 3,
-            bgcolor: isClicked ? "success.main" : "#F9A602",
-            color: isClicked ? "#fff" : "#000",
+            mt: 1,
+            bgcolor:
+              stock <= 0 ? "#bdbdbd" : isClicked ? "success.main" : "#F9A602",
+
+            color: stock <= 0 ? "#666" : isClicked ? "#fff" : "#000",
+
             borderRadius: "40px",
             fontSize: 14,
             fontWeight: 600,
             textTransform: "none",
+
             "&:hover": {
-              bgcolor: "#F59E0B",
+              bgcolor: stock <= 0 ? "#bdbdbd" : "#F59E0B",
             },
           }}
         >
-          {isClicked ? "Added to Cart!" : "Add to Cart"}
+          {stock <= 0
+            ? "Out of Stock"
+            : isClicked
+              ? "Added to Cart!"
+              : "Add to Cart"}
         </Button>
       </CardContent>
     </Card>

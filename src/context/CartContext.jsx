@@ -23,21 +23,56 @@ function Cart({ children }) {
   useEffect(() => {
     if (!id || !currentUser) return;
 
-    const addCart = async () => {
+    const addToCart = async () => {
       try {
-        await addDoc(collection(db, "cart"), {
-          userId: currentUser,
-          productId: id,
-          quantity: 1,
-        });
+        const productRef = doc(db, "products", String(id));
 
-        setId("");
-      } catch (error) {
-        console.log(error);
+        const productSnap = await getDoc(productRef);
+
+        if (!productSnap.exists()) {
+          alert("Product not found");
+          return;
+        }
+
+        const product = productSnap.data();
+
+        if (product.stock <= 0) {
+          alert("This product is out of stock.");
+          return;
+        }
+
+        const q = query(
+          collection(db, "cart"),
+          where("userId", "==", currentUser),
+          where("productId", "==", String(id)),
+        );
+
+        const snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+          const cartDoc = snapshot.docs[0];
+
+          const cartData = cartDoc.data();
+
+          if (cartData.quantity >= product.stock) {
+            alert("Out of stock");
+            return;
+          }
+
+          await updateDoc(cartDoc.ref, {
+            quantity: increment(1),
+          });
+        } else {
+          await addDoc(collection(db, "cart"), {
+            userId: currentUser,
+            productId: String(id),
+            quantity: 1,
+          });
+        }
+      } catch (err) {
+        console.log(err);
       }
     };
-
-    addCart();
   }, [id, currentUser]);
 
   // Read cart and merge with product details
@@ -66,12 +101,8 @@ function Cart({ children }) {
             }
             return {
               cartId: cartDoc.id,
-
-              userId: cartData.userId,
               productId: cartData.productId,
               quantity: cartData.quantity,
-
-              // Product details
               ...productSnap.data(),
             };
           }),

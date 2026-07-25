@@ -19,7 +19,6 @@ function AddToCart() {
   const { cartItem, setCartItem } = useContext(cartContext);
   const { currentUser, setCounter } = useContext(UserContext);
 
-  // Redirect when cart is empty
   useEffect(() => {
     if (!currentUser) {
       setCartItem([]);
@@ -29,17 +28,23 @@ function AddToCart() {
 
     if (cartItem.length === 0) {
       navigate("/emptycart");
+      return;
     }
 
-    setCounter(cartItem.length);
-  }, [currentUser, cartItem, navigate]);
+    const total = cartItem.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
-  // Cart already contains product details from CartContext
-  const filterItem = cartItem;
+    setCounter(total);
+  }, [currentUser, cartItem, navigate, setCartItem, setCounter]);
 
-  const totalItems = filterItem.reduce((total, item) => {
-    return total + item.quantity;
-  }, 0);
+  const filterItem = cartItem.map((item) => ({
+    ...item,
+    outOfStock: (item.stock ?? 0) <= 0,
+  }));
+
+  const totalItems = filterItem.reduce(
+    (total, item) => total + (item.quantity || 1),
+    0,
+  );
 
   const grandTotal = filterItem.reduce((total, item) => {
     const price = Number(item.price.replace("$", ""));
@@ -64,10 +69,10 @@ function AddToCart() {
     }
   };
 
+  const hasOutOfStock = filterItem.some((item) => item.outOfStock);
+
   return (
     <Box sx={{ width: "100%", maxWidth: "1400px", mx: "auto" }}>
-      {/* Header */}
-
       <Box
         sx={{
           px: { xs: "10px", md: "30px" },
@@ -79,11 +84,16 @@ function AddToCart() {
         }}
       >
         <Stack>
-          <Typography sx={{ fontSize: { xs: "22px", sm: "32px" }, fontWeight: 600 }}>
+          <Typography
+            sx={{
+              fontSize: { xs: "22px", sm: "32px" },
+              fontWeight: 600,
+            }}
+          >
             Shopping Cart
           </Typography>
 
-          <Typography>{totalItems} Item in your Cart</Typography>
+          <Typography>{totalItems} Items in your Cart</Typography>
         </Stack>
 
         <Box
@@ -95,7 +105,6 @@ function AddToCart() {
             cursor: "pointer",
             p: 1,
             color: "#6b7280",
-
             "&:hover": {
               bgcolor: "#f9e7c8",
               borderRadius: "30px",
@@ -103,15 +112,10 @@ function AddToCart() {
             },
           }}
         >
-          <ArrowBackIcon sx={{ fontSize: { xs: "14px", sm: "16px" } }} />
-
-          <Typography sx={{ fontSize: { xs: "14px", sm: "16px" } }}>
-            Continue Shopping
-          </Typography>
+          <ArrowBackIcon />
+          <Typography>Continue Shopping</Typography>
         </Box>
       </Box>
-
-      {/* Cart */}
 
       <Box
         sx={{
@@ -126,9 +130,11 @@ function AddToCart() {
           elevation={2}
           sx={{
             flex: 2,
-            p: 2,
+            p: 3,
             borderRadius: 5,
-            height: "max-content",
+            height:'max-content'
+                
+
           }}
         >
           <Box
@@ -136,10 +142,9 @@ function AddToCart() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              mb: 3,
             }}
           >
-            <Typography fontWeight={600}>Cart Items</Typography>
+            <Typography sx={{fontSize:'20px' ,fontWeight:600}}>Cart Items</Typography>
 
             <Box
               onClick={clearCart}
@@ -148,17 +153,27 @@ function AddToCart() {
                 alignItems: "center",
                 gap: 1,
                 cursor: "pointer",
-
                 "&:hover": {
                   color: "#d65050",
                 },
               }}
             >
-              <DeleteOutlineOutlinedIcon fontSize="small" />
-
+              <DeleteOutlineOutlinedIcon />
               <Typography>Clear All</Typography>
             </Box>
           </Box>
+
+          {hasOutOfStock && (
+            <Typography
+              sx={{
+                color: "red",
+                fontWeight: 600,
+                mb: 2,
+              }}
+            >
+              Some products are currently out of stock.
+            </Typography>
+          )}
 
           {filterItem.map((item) => (
             <ProductList
@@ -169,19 +184,16 @@ function AddToCart() {
           ))}
         </Paper>
 
-        {/* Summary */}
-
         <Box sx={{ flex: 1 }}>
           <OrderSummary
             subtotal={grandTotal}
             totalItems={totalItems}
             tax={grandTotal * 0.08}
             total={grandTotal + grandTotal * 0.08}
+            disableCheckout={filterItem.some((item) => item.stock <= 0)}
           />
         </Box>
       </Box>
-
-      {/* Browse */}
 
       <Paper
         elevation={3}
@@ -194,9 +206,7 @@ function AddToCart() {
           borderRadius: 6,
         }}
       >
-        <Typography fontWeight={600}>
-          You might also like
-        </Typography>
+        <Typography fontWeight={600}>You might also like</Typography>
 
         <Box
           sx={{
@@ -213,7 +223,7 @@ function AddToCart() {
               mb: 2,
             }}
           >
-            Discover more products that match your style
+            Discover more products that match your style.
           </Typography>
 
           <Button
@@ -224,7 +234,6 @@ function AddToCart() {
               color: "#000",
               border: "1px solid #ddd",
               borderRadius: "40px",
-
               "&:hover": {
                 bgcolor: "#f8f8f8",
               },

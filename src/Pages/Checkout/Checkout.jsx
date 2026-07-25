@@ -8,7 +8,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
+import { Form, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import {
   addDoc,
@@ -29,21 +30,21 @@ function Checkout() {
   const { currentUser } = useContext(UserContext);
   const { cartItem } = useContext(cartContext);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    address: "",
-    city: "",
-    payment: "Cash on Delivery",
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      phone: "",
+      email: "",
+      address: "",
+      city: "",
+      payment: "Cash on Delivery",
+    },
   });
-
-  const handleChange = (e, ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   const subtotal = cartItem.reduce((total, item) => {
     const price = Number(item.price.replace("$", ""));
@@ -58,38 +59,28 @@ function Checkout() {
     return total + item.quantity;
   }, 0);
 
-  const placeOrder = async () => {
+  const placeOrder = async (Data) => {
     try {
-      await addDoc(collection(db, "orders"), {
+      const order = await addDoc(collection(db, "orders"), {
         userId: currentUser,
-
-        customer: formData,
-
+        customer: Data,
         items: cartItem,
-
         totalItems,
-
         subtotal,
-
         tax,
-
         total,
-
         status: "Pending",
-
         createdAt: serverTimestamp(),
       });
 
       for (const item of cartItem) {
-        const productRef = doc(db, "products", item.productId);
+        const productRef = doc(db, "products", String(item.productId));
 
         const snap = await getDoc(productRef);
 
         if (snap.exists()) {
-          const stock = snap.data().stock;
-
           await updateDoc(productRef, {
-            stock: stock - item.quantity,
+            stock: snap.data().stock - item.quantity,
           });
         }
       }
@@ -97,142 +88,192 @@ function Checkout() {
       for (const item of cartItem) {
         await deleteDoc(doc(db, "cart", item.cartId));
       }
+
       navigate("/order-success");
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      alert(error.message);
     }
   };
 
   return (
     <Container maxWidth="lg" sx={{ mt: 15, mb: 10 }}>
-      <Typography variant="h4" fontWeight={700} mb={5} textAlign="center">
-        Checkout
-      </Typography>
+      <form onSubmit={handleSubmit(placeOrder)}>
+        <Typography variant="h4" fontWeight={700} mb={5} textAlign="center">
+          Checkout
+        </Typography>
+        <Grid container spacing={4}>
+          {/* Shipping Form */}
 
-      <Grid container spacing={4}>
-        {/* Shipping Form */}
+          <Grid item xs={12} md={7}>
+            <Paper sx={{ p: 4, borderRadius: 4 }}>
+              <Typography sx={{ mb: 3 }}>Shipping Details</Typography>
 
-        <Grid item xs={12} md={7}>
-          <Paper sx={{ p: 4, borderRadius: 4 }}>
-            <Typography variant="h6" mb={3}>
-              Shipping Details
-            </Typography>
+              <TextField
+                fullWidth
+                label="Full Name"
+                sx={{ mb: 3 }}
+                {...register("name", {
+                  required: "Name is required",
+                  minLength: {
+                    value: 3,
+                    message: "Name character must be greater than 3",
+                  },
+                })}
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
+              <TextField
+                fullWidth
+                label="Phone Number"
+                sx={{ mb: 3 }}
+                {...register("phone", {
+                  required: "Phone number is required",
+                  pattern: {
+                    value: /^0\d{10}$/,
+                    message: "Enter a valid phone number",
+                  },
+                })}
+                error={!!errors.phone}
+                helperText={errors.phone?.message}
+              />
+              <TextField
+                fullWidth
+                label="Email"
+                sx={{ mb: 3 }}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^\S+@\S+\.\S+$/,
+                    message: "Invalid email",
+                  },
+                })}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+              />
+              <TextField
+                fullWidth
+                multiline
+                rows={3}
+                label="Address"
+                sx={{ mb: 3 }}
+                {...register("address", {
+                  required: "Address is required",
+                })}
+                error={!!errors.address}
+                helperText={errors.address?.message}
+              />
 
-            <TextField
-              fullWidth
-              label="Full Name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              sx={{ mb: 3 }}
-            />
+              <TextField
+                fullWidth
+                label="City"
+                sx={{ mb: 3 }}
+                {...register("city")}
+                error={!!errors.city}
+                helperText={errors.city?.message}
+              />
+              <TextField
+                select
+                fullWidth
+                label="Payment Method"
+                defaultValue="Cash on Delivery"
+                {...register("payment")}
+              >
+                <MenuItem value="Cash on Delivery">Cash on Delivery</MenuItem>
+                <MenuItem value="Credit Card">Credit Card</MenuItem>
+                <MenuItem value="Easypaisa">Easypaisa</MenuItem>
+                <MenuItem value="JazzCash">JazzCash</MenuItem>
+              </TextField>
+            </Paper>
+          </Grid>
 
-            <TextField
-              fullWidth
-              label="Phone Number"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              sx={{ mb: 3 }}
-            />
+          {/* Order Summary */}
 
-            <TextField
-              fullWidth
-              label="Email"
-              name="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              sx={{ mb: 3 }}
-            />
+          <Grid item size={{ xs: 12, md: 5 }}>
+            <Paper sx={{ p: 4, borderRadius: 4 }}>
+              <Typography sx={{ fontSize: "18px", fontWeight: 600, mb: 3 }}>
+                Order Summary
+              </Typography>
 
-            <TextField
-              fullWidth
-              label="Address"
-              name="address"
-              multiline
-              rows={3}
-              value={formData.address}
-              onChange={handleChange}
-              sx={{ mb: 3 }}
-            />
+              {/* <Box display="flex" justifyContent="space-between" mb={2}>
+                <Typography>Total Items</Typography>
 
-            <TextField
-              fullWidth
-              label="City"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              sx={{ mb: 3 }}
-            />
+                <Typography>{totalItems}</Typography>
+              </Box> */}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  mb: 1.5,
+                }}
+              >
+                <Typography sx={{ color: "#6b7280" }}>Toatal Items</Typography>
 
-            <TextField
-              select
-              fullWidth
-              label="Payment Method"
-              name="payment"
-              value={formData.payment}
-              onChange={handleChange}
-            >
-              <MenuItem value="Cash on Delivery">Cash on Delivery</MenuItem>
+                <Typography >{totalItems}</Typography>
+              </Box>
 
-              <MenuItem value="Credit Card">Credit Card</MenuItem>
-            </TextField>
-          </Paper>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  mb: 1.5,
+                }}
+              >
+                <Typography sx={{ color: "#6b7280" }}>Subtotal</Typography>
+
+                <Typography>${subtotal.toFixed(2)}</Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  mb: 1.5,
+                }}
+              >
+                <Typography sx={{ color: "#6b7280" }}>Tax</Typography>
+
+                <Typography>${tax.toFixed(2)}</Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  mb: 3,
+                }}
+              >
+                <Typography sx={{ fontSize: "16px", fontWeight: 600 }}>
+                  Total
+                </Typography>
+
+                <Typography sx={{ fontSize: "16px", fontWeight: 600 }}>
+                  ${total.toFixed(2)}
+                </Typography>
+              </Box>
+
+              <Button
+                fullWidth
+                type="submit"
+                sx={{
+                  bgcolor: "#F59E0B",
+                  color: "#000",
+                  py: 1.5,
+                  borderRadius: '20px',
+                  fontSize:'16px',
+                  fontWeight:600,
+
+                  "&:hover": {
+                    bgcolor: "#d97706",
+                  },
+                }}
+              >
+                Place Order
+              </Button>
+            </Paper>
+          </Grid>
         </Grid>
-
-        {/* Order Summary */}
-
-        <Grid item xs={12} md={5}>
-          <Paper sx={{ p: 4, borderRadius: 4 }}>
-            <Typography variant="h6" mb={3}>
-              Order Summary
-            </Typography>
-
-            <Box display="flex" justifyContent="space-between" mb={2}>
-              <Typography>Total Items</Typography>
-
-              <Typography>{totalItems}</Typography>
-            </Box>
-
-            <Box display="flex" justifyContent="space-between" mb={2}>
-              <Typography>Subtotal</Typography>
-
-              <Typography>${subtotal.toFixed(2)}</Typography>
-            </Box>
-
-            <Box display="flex" justifyContent="space-between" mb={2}>
-              <Typography>Tax</Typography>
-
-              <Typography>${tax.toFixed(2)}</Typography>
-            </Box>
-
-            <Box display="flex" justifyContent="space-between" mb={4}>
-              <Typography fontWeight={700}>Total</Typography>
-
-              <Typography fontWeight={700}>${total.toFixed(2)}</Typography>
-            </Box>
-
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={placeOrder}
-              sx={{
-                bgcolor: "#F59E0B",
-                color: "#000",
-                py: 1.5,
-                borderRadius: 10,
-
-                "&:hover": {
-                  bgcolor: "#d97706",
-                },
-              }}
-            >
-              Place Order
-            </Button>
-          </Paper>
-        </Grid>
-      </Grid>
+      </form>
     </Container>
   );
 }
