@@ -91,7 +91,15 @@
 // }
 
 // export default Home;
-
+import airflex from "../../../public/Airflex.avif";
+import urban from "../../../public/Urban.avif";
+import classic from "../../../public/Classic.avif";
+import volt from "../../../public/Volt.avif";
+import zenith from "../../../public/Zenith.avif";
+import street from "../../../public/Street.avif";
+import nova from "../../../public/Nova.avif";
+import pulse from "../../../public/Pulse.avif";
+import core from "../../../public/Core.avif";
 import { Box, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
@@ -176,16 +184,6 @@ function Home() {
 }
 
 export default Home;
-
-import airflex from "../../../public/Airflex.avif";
-import urban from "../../../public/Urban.avif";
-import classic from "../../../public/Classic.avif";
-import volt from "../../../public/Volt.avif";
-import zenith from "../../../public/Zenith.avif";
-import street from "../../../public/Street.avif";
-import nova from "../../../public/Nova.avif";
-import pulse from "../../../public/Pulse.avif";
-import core from "../../../public/Core.avif";
 
 const products = [
   {
