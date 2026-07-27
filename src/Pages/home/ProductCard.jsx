@@ -26,7 +26,7 @@ import {
 import { db } from "../../lib/Firebase";
 export default function ProductCard({ name, price, image, id, stock }) {
   const context = useContext(UserContext);
-  const { setId } = useContext(cartContext);
+  const { setId, cartItem } = useContext(cartContext);
   const { currentUser, counter, setCounter } = context;
   const [isClicked, setIsClicked] = useState(false);
 
@@ -81,7 +81,7 @@ export default function ProductCard({ name, price, image, id, stock }) {
       console.log(error);
     }
   };
-
+  const isInCart = cartItem.some((item) => item.productId === id);
   return (
     <Card
       sx={{
@@ -196,13 +196,12 @@ export default function ProductCard({ name, price, image, id, stock }) {
           startIcon={<ShoppingCartOutlinedIcon />}
           variant="contained"
           onClick={addToCart}
-          disabled={stock <= 0}
+          disabled={stock <= 0 || isInCart}
           sx={{
             mt: 1,
-            bgcolor:
-              stock <= 0 ? "#bdbdbd" : isClicked ? "success.main" : "#F9A602",
+            bgcolor: stock <= 0 ? "#bdbdbd" : isInCart? "success.main" : "#F9A602",
 
-            color: stock <= 0 ? "#666" : isClicked ? "#fff" : "#000",
+            color: stock <= 0 ? "#666" :isInCart ? "#fff" : "#000",
 
             borderRadius: "40px",
             fontSize: 14,
@@ -216,8 +215,8 @@ export default function ProductCard({ name, price, image, id, stock }) {
         >
           {stock <= 0
             ? "Out of Stock"
-            : isClicked
-              ? "Added to Cart!"
+            : isInCart
+              ? "Added to Cart"
               : "Add to Cart"}
         </Button>
       </CardContent>

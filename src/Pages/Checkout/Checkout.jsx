@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Form, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import {
@@ -17,13 +17,16 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  getDocs,
+  query,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../../lib/Firebase";
 import UserContext from "../../context/UserContext";
 import { cartContext } from "../../context/CartContext";
-
+import CircularProgress from "@mui/material/CircularProgress";
 function Checkout() {
   const navigate = useNavigate();
 
@@ -58,10 +61,30 @@ function Checkout() {
   const totalItems = cartItem.reduce((total, item) => {
     return total + item.quantity;
   }, 0);
-
   const placeOrder = async (Data) => {
     try {
-      const order = await addDoc(collection(db, "orders"), {
+      // Step 1: Check stock of every cart item
+      for (const item of cartItem) {
+        const productRef = doc(db, "products", String(item.productId));
+        const productSnap = await getDoc(productRef);
+
+        if (!productSnap.exists()) {
+          alert(`${item.name} does not exist.`);
+          return;
+        }
+
+        const product = productSnap.data();
+
+        if (product.stock < item.quantity) {
+          alert(
+            `${item.name} has only ${product.stock} item(s) left in stock.`,
+          );
+          return;
+        }
+      }
+
+      // Step 2: Create order
+      await addDoc(collection(db, "orders"), {
         userId: currentUser,
         customer: Data,
         items: cartItem,
@@ -73,18 +96,17 @@ function Checkout() {
         createdAt: serverTimestamp(),
       });
 
+      // Step 3: Update stock
       for (const item of cartItem) {
         const productRef = doc(db, "products", String(item.productId));
+        const productSnap = await getDoc(productRef);
 
-        const snap = await getDoc(productRef);
-
-        if (snap.exists()) {
-          await updateDoc(productRef, {
-            stock: snap.data().stock - item.quantity,
-          });
-        }
+        await updateDoc(productRef, {
+          stock: productSnap.data().stock - item.quantity,
+        });
       }
 
+      // Step 4: Delete cart items
       for (const item of cartItem) {
         await deleteDoc(doc(db, "cart", item.cartId));
       }
@@ -203,7 +225,7 @@ function Checkout() {
               >
                 <Typography sx={{ color: "#6b7280" }}>Toatal Items</Typography>
 
-                <Typography >{totalItems}</Typography>
+                <Typography>{totalItems}</Typography>
               </Box>
 
               <Box
@@ -253,9 +275,9 @@ function Checkout() {
                   bgcolor: "#F59E0B",
                   color: "#000",
                   py: 1.5,
-                  borderRadius: '20px',
-                  fontSize:'16px',
-                  fontWeight:600,
+                  borderRadius: "20px",
+                  fontSize: "16px",
+                  fontWeight: 600,
 
                   "&:hover": {
                     bgcolor: "#d97706",
@@ -264,6 +286,7 @@ function Checkout() {
               >
                 Place Order
               </Button>
+              
             </Paper>
           </Grid>
         </Grid>
