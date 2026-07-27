@@ -44,19 +44,19 @@ function App() {
           {/* Home */}
           <Route
             path="/"
-            element={user ? <Home /> : <Navigate to="/signup" replace />}
+            element={user ? <Home /> : <Navigate to="/signin" />}
           />
 
           {/* Sign Up */}
           <Route
             path="/signup"
-            element={!user ? <SignUp /> : <Navigate to="/" replace />}
+            element={user ? <Navigate to="/" /> : <SignUp />}
           />
 
           {/* Sign In */}
           <Route
             path="/signin"
-            element={!user ? <Signin /> : <Navigate to="/" replace />}
+            element={user ? <Navigate to="/" /> : <Signin />}
           />
           {/* Contact Us */}
           <Route path="/contactus" element={<Contact />} />

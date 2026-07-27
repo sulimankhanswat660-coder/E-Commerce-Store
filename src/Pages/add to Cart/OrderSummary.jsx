@@ -122,28 +122,6 @@ export default function OrderSummary({
       </Box>
 
       {/* Button */}
-      {/* <Button
-        fullWidth
-        onClick={() => navigate("/checkout")}
-        startIcon={<CreditCardOutlinedIcon />}
-        variant="contained"
-        sx={{
-          //   py: 1.8,
-          borderRadius: "18px",
-          bgcolor: "#f59e0b",
-          color: "#000",
-          fontSize: 15,
-          fontWeight: 600,
-          textTransform: "none",
-          boxShadow: 4,
-
-          "&:hover": {
-            bgcolor: "#E69500",
-          },
-        }}
-      >
-        Proceed to Checkout
-      </Button> */}
       <Button
         fullWidth
         variant="contained"

@@ -117,7 +117,7 @@ function Checkout() {
                   required: "Name is required",
                   minLength: {
                     value: 3,
-                    message: "Name character must be greater than 3",
+                    message: "Name must be at least 3 characters ",
                   },
                 })}
                 error={!!errors.name}
@@ -194,12 +194,6 @@ function Checkout() {
               <Typography sx={{ fontSize: "18px", fontWeight: 600, mb: 3 }}>
                 Order Summary
               </Typography>
-
-              {/* <Box display="flex" justifyContent="space-between" mb={2}>
-                <Typography>Total Items</Typography>
-
-                <Typography>{totalItems}</Typography>
-              </Box> */}
               <Box
                 sx={{
                   display: "flex",
