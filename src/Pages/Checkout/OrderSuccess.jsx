@@ -58,12 +58,12 @@ function OrderSuccess() {
           sx={{
             bgcolor: "#F59E0B",
             color: "#000",
-            px: 5,
+            px:{xs:3,sm: 5},
             py: 1.5,
             borderRadius: "40px",
             textTransform: "none",
             fontWeight: 700,
-            fontSize: 16,
+            fontSize: {xs:'14px',sm:'16px'},
             "&:hover": {
               bgcolor: "#fbbf24",
             },
