@@ -13,6 +13,7 @@ import Checkout from "./Pages/Checkout/Checkout";
 import OrderSuccess from "./Pages/Checkout/OrderSuccess";
 import MyOrders from "./Pages/orders/MyOrders";
 import UploadProducts from "./Pages/admin/UploadProducts";
+import OrderHistory from "./Pages/orders/OrderHistory";
 
 function App() {
   const usercontext = useContext(UserContext);
@@ -73,6 +74,7 @@ function App() {
           <Route path="/order-success" element={<OrderSuccess />} />
 
           <Route path="/orders" element={<MyOrders />} />
+          <Route path="orderhistory" element={<OrderHistory/>}/>
 
           <Route path="/upload-products" element={<UploadProducts />} />
           {/* Any other route */}

@@ -216,7 +216,7 @@ export default function ProductCard({ name, price, image, id, stock }) {
           {stock <= 0
             ? "Out of Stock"
             : isInCart
-              ? "Added to Cart"
+              ? "View in Cart"
               : "Add to Cart"}
         </Button>
       </CardContent>

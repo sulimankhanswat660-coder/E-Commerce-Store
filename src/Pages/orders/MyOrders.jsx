@@ -14,7 +14,6 @@ import {
 } from "firebase/firestore";
 import { db } from "../../lib/Firebase";
 import UserContext from "../../context/UserContext";
-
 function MyOrders() {
   const { currentUser } = useContext(UserContext);
 

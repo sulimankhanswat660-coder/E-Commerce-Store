@@ -32,6 +32,7 @@ function Checkout() {
 
   const { currentUser } = useContext(UserContext);
   const { cartItem } = useContext(cartContext);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -61,9 +62,11 @@ function Checkout() {
   const totalItems = cartItem.reduce((total, item) => {
     return total + item.quantity;
   }, 0);
-  const placeOrder = async (Data) => {
+  const placeOrder = async (data) => {
+    setLoading(true);
+
     try {
-      // Step 1: Check stock of every cart item
+      // Step 1: Check stock
       for (const item of cartItem) {
         const productRef = doc(db, "products", String(item.productId));
         const productSnap = await getDoc(productRef);
@@ -86,7 +89,7 @@ function Checkout() {
       // Step 2: Create order
       await addDoc(collection(db, "orders"), {
         userId: currentUser,
-        customer: Data,
+        customer: data,
         items: cartItem,
         totalItems,
         subtotal,
@@ -115,6 +118,8 @@ function Checkout() {
     } catch (error) {
       console.error(error);
       alert(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -267,10 +272,11 @@ function Checkout() {
                   ${total.toFixed(2)}
                 </Typography>
               </Box>
-
               <Button
                 fullWidth
                 type="submit"
+                variant="contained"
+                disabled={loading}
                 sx={{
                   bgcolor: "#F59E0B",
                   color: "#000",
@@ -280,13 +286,25 @@ function Checkout() {
                   fontWeight: 600,
 
                   "&:hover": {
-                    bgcolor: "#d97706",
+                    bgcolor: loading ? "#F59E0B" : "#d97706",
                   },
                 }}
               >
-                Place Order
+                {loading ? (
+                  <>
+                    <CircularProgress
+                      size={20}
+                      color="inherit"
+                      sx={{ mr: 1 }}
+                    />
+                    Placing Order...
+                  </>
+                ) : (
+                  "Place Order"
+                )}
               </Button>
-              
+
+           
             </Paper>
           </Grid>
         </Grid>
