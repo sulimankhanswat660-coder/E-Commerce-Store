@@ -14,6 +14,7 @@ import OrderSuccess from "./Pages/Checkout/OrderSuccess";
 import MyOrders from "./Pages/orders/MyOrders";
 import UploadProducts from "./Pages/admin/UploadProducts";
 import OrderHistory from "./Pages/orders/OrderHistory";
+import ScrollToTop from "./component/ScrollToTop";
 
 function App() {
   const usercontext = useContext(UserContext);
@@ -38,6 +39,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+      <ScrollToTop/>
         {/* Navbar only for authenticated users */}
         {user && <Navbar />}
 

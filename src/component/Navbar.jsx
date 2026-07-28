@@ -106,7 +106,6 @@ const Navbar = () => {
                   xs: "none",
                   md: "flex",
                 },
-                // gap: 2,
               }}
             >
               <Typography
@@ -116,7 +115,7 @@ const Navbar = () => {
                   fontSize: "1rem",
                   width: "fit-content",
                   py: 1,
-                  mr: 8,
+                  mr: 4,
                   px: 2,
 
                   fontWeight: "500",
@@ -128,6 +127,26 @@ const Navbar = () => {
                 }}
               >
                 Contact
+              </Typography>
+              <Typography
+                onClick={() => navigate("/orderhistory")}
+                sx={{
+                  cursor: "pointer",
+                  fontSize: "1rem",
+                  width: "fit-content",
+                  py: 1,
+                  // mr: 8,
+                  px: 2,
+
+                  fontWeight: "500",
+                  "&:hover": {
+                    bgcolor: "#e9e9e9",
+                    borderRadius: "30px",
+                    color: "#000",
+                  },
+                }}
+              >
+                My Order
               </Typography>
             </Box>
 
@@ -211,8 +230,23 @@ const Navbar = () => {
         <Box sx={{ width: 300 }}>
           <List>
             <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/contactus")}>
+              <ListItemButton
+                onClick={() => {
+                  setOpen(false);
+                  navigate("/contactus");
+                }}
+              >
                 <ListItemText primary="Contact" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() => {
+                  setOpen(false);
+                  navigate("/orderhistory");
+                }}
+              >
+                <ListItemText primary="My Order" />
               </ListItemButton>
             </ListItem>
 
